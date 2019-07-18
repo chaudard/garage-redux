@@ -4,8 +4,13 @@ import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
 
 import Aside from '../components/aside';
+import { removeCar } from '../actions';
 
 class CarsShow extends Component {
+  handleClick = () => {
+    this.props.removeCar(this.props.history, this.props.car);
+  }
+
   render () {
     const car = this.props.car;
     if (!car) {
@@ -28,6 +33,10 @@ class CarsShow extends Component {
             </ul>
             <span className="plate">{car.plate}</span>
           </div>
+          <button className="delete" onClick={this.handleClick}>
+            <i className="fa fa-trash-o" aria-hidden="true"></i>
+            Delete
+          </button>
         </div>
       </div>
     ];
@@ -41,4 +50,8 @@ function mapStateToProps(state, ownProps) {
   };
 }
 
-export default withRouter(connect(mapStateToProps)(CarsShow));
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({ removeCar }, dispatch);
+}
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(CarsShow));
